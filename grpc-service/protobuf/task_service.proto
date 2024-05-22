@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package task_service;
+
+service TaskService {
+    rpc CreateTask(CreateTaskGrpcPayload) returns (CreateTaskGrpcResponse);
+    rpc UpdateTask(UpdateTaskGrpcPayload) returns (UpdateTaskGrpcResponse);
+    rpc ReadTasks(ReadTasksGrpcPayload) returns (ReadTasksGrpcResponse);
+    rpc DeleteTask(DeleteTaskGrpcPayload) returns (DeleteTaskGrpcResponse);
+}
+
+message TasksInGrpc {
+    string id = 1;
+    string title = 2;
+    string description = 3;
+    bool is_completed = 4;
+    int64 created_at = 5;
+    int64 updated_at = 6;
+}
+
+message CreateTaskGrpcPayload {
+    string title = 1;
+    string description = 2;
+    bool is_completed = 3;
+    int64 created_at = 4;
+    int64 updated_at = 5;
+}
+
+message CreateTaskGrpcResponse {
+    string task_id = 1;
+}
+
+message UpdateTaskGrpcPayload {
+    string task_id = 1;
+    bool is_completed = 2; 
+}
+
+message UpdateTaskGrpcResponse {
+    string message = 1;
+}
+
+message ReadTasksGrpcPayload {
+    int32 limit = 1;
+    int32 skip = 2;
+}
+
+message ReadTasksGrpcResponse {
+    repeated TasksInGrpc tasks = 1;
+}
+
+message DeleteTaskGrpcPayload {
+    string task_id = 1;
+}
+
+message DeleteTaskGrpcResponse {
+    string message = 1;
+}

@@ -1,0 +1,12 @@
+target/
+**/Cargo.lock
+.env
+tmp/
+service_account_key.json
+
+# Personal Setup
+MakeFile
+.vscode
+
+# Tests Setup
+*.profraw
