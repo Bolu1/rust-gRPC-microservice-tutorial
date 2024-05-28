@@ -6,3 +6,23 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+anyhow = "1.0.75"
+async-trait = "0.1.74"
+chrono = { version = "0.4.26", features = ["serde"] }
+dotenv = "0.15.0"
+env_logger = "0.10.0"
+serde = { version = "1.0.188", features = ["derive"] }
+serde_json = "1.0.105"
+sqlx = { version = "0.7.1", features = ["tls-native-tls", "runtime-async-std", "postgres", "chrono", "uuid"] }
+sqlx-cli = { version = "0.7.1", default-features = false, features = ["postgres"] }
+tokio-util = "0.7.9"
+tokio = { version = "1.29.1", features = ["macros", "rt-multi-thread"] }
+tracing = "0.1.37"
+uuid = { version = "1.4.1", features = ["serde", "v4"] }
+futures = "0.3.28"
+futures-util = "0.3.28"
+tonic = "0.10.2"
+tonic-reflection = "0.10.2"
+http-body = "0.4.4"
+bytes = "1.5.0"
+grpc-service = { git = "https://github.com/Bolu1/rust-gRPC-microservice-tutorial.git" }
