@@ -21,9 +21,6 @@ message TasksInGrpc {
 message CreateTaskGrpcPayload {
     string title = 1;
     string description = 2;
-    bool is_completed = 3;
-    int64 created_at = 4;
-    int64 updated_at = 5;
 }
 
 message CreateTaskGrpcResponse {
@@ -40,8 +37,8 @@ message UpdateTaskGrpcResponse {
 }
 
 message ReadTasksGrpcPayload {
-    int32 limit = 1;
-    int32 skip = 2;
+    int32 page = 1;
+    int32 limit = 2;
 }
 
 message ReadTasksGrpcResponse {

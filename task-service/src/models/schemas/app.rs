@@ -14,6 +14,6 @@ pub struct Application {
 }
 
 #[derive(Debug, Clone)]
-pub struct ProjectServiceService {
+pub struct TaskServiceService {
     pub app_state: AppState,
 }

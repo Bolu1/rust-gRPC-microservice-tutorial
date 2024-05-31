@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 use uuid::Uuid;
 
+#[derive(Serialize, Deserialize, Debug, Clone, FromRow)]
 pub struct TaskInDB {
     pub id: Uuid,
     pub title: String,
