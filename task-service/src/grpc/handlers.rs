@@ -1,10 +1,13 @@
-use crate::repository::crud::task::TaskExt;
+use crate::{models::domain::task::TaskInDB, repository::crud::task::TaskExt};
 use crate::models::schemas::app::TaskServiceService;
 use grpc_service::task_service::{
     task_service_server::TaskService, CreateTaskGrpcPayload, CreateTaskGrpcResponse,
-    ReadTasksGrpcPayload, ReadTasksGrpcResponse
+    ReadTasksGrpcPayload, ReadTasksGrpcResponse,
+    UpdateTaskGrpcPayload, UpdateTaskGrpcResponse,
+    DeleteTaskGrpcPayload, DeleteTaskGrpcResponse
 };
 use tonic::{Code, Request, Response, Status};
+use uuid::Uuid;
 
 #[tonic::async_trait]
 impl TaskService for TaskServiceService {
@@ -18,14 +21,14 @@ impl TaskService for TaskServiceService {
             .app_state
             .db
             .create_task(
-                payload.title,
-                payload.description
+                payload.title.clone(),
+                payload.description.clone()
             )
             .await
-            .expect("Error saving carbon project");
+            .expect("Error saving task");
 
         Ok(Response::new(CreateTaskGrpcResponse {
-            task_id:result.id.to_string()
+            task_id: result.id.to_string()
         }))
     }
 
@@ -35,7 +38,7 @@ impl TaskService for TaskServiceService {
     ) -> Result<Response<ReadTasksGrpcResponse>, Status> {
         let payload: &ReadTasksGrpcPayload = request.get_ref();
 
-        let carbon_projects_in_read = self
+        let tasks = self
             .app_state
             .db
             .read_tasks(
@@ -43,11 +46,50 @@ impl TaskService for TaskServiceService {
                 payload.limit as usize,
             )
             .await
-            .expect("Error reading carbon projects");
+            .expect("Error reading tasks");
 
         Ok(Response::new(ReadTasksGrpcResponse {
-            count: carbon_projects_in_read.count,
-            carbon_projects: carbon_projects_in_read.carbon_projects,
+            tasks: TaskInDB::tasks_into_grpc(tasks)
+        }))
+    }
+
+    async fn update_task(
+        &self,
+        request: Request<UpdateTaskGrpcPayload>,
+    ) -> Result<Response<UpdateTaskGrpcResponse>, Status> {
+        let payload: &UpdateTaskGrpcPayload = request.get_ref();
+
+        _ = self
+            .app_state
+            .db
+            .update_task_status(
+                Uuid::parse_str(&payload.task_id).expect("Error converting string into Uuid"),
+                payload.is_completed
+            )
+            .await;
+
+        Ok(Response::new(UpdateTaskGrpcResponse {
+            message: "Task status updated successfully".to_string(),
+        }))
+    }
+
+    async fn delete_task(
+        &self,
+        request: Request<DeleteTaskGrpcPayload>,
+    ) -> Result<Response<DeleteTaskGrpcResponse>, Status> {
+        let payload: &DeleteTaskGrpcPayload = request.get_ref();
+
+        self
+            .app_state
+            .db
+            .delete_tasks(
+                Uuid::parse_str(&payload.task_id).expect("Error converting string into Uuid"),
+            )
+            .await
+            .map_err(|_| Status::new(Code::NotFound, "Not found"))?;
+
+        Ok(Response::new(DeleteTaskGrpcResponse {
+            message: "Task deleted successfully".to_string(),
         }))
     }
 

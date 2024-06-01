@@ -21,8 +21,8 @@ tracing = "0.1.37"
 uuid = { version = "1.4.1", features = ["serde", "v4"] }
 futures = "0.3.28"
 futures-util = "0.3.28"
-tonic = "0.10.2"
-tonic-reflection = "0.10.2"
+tonic = "0.11.0"
+tonic-reflection = "0.11.0"
 http-body = "0.4.4"
 bytes = "1.5.0"
 grpc-service = { git = "https://github.com/Bolu1/rust-gRPC-microservice-tutorial.git" }
