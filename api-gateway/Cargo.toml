@@ -5,4 +5,22 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[lib]
+path = "src/lib.rs"
+
 [dependencies]
+actix-cors = "0.6.4"
+actix-rt = "2.9.0"
+anyhow = "1.0.75"
+actix-web = "4.3.1"
+tonic = "0.11.0"
+prost = "0.12.1"
+env_logger = "0.10.0"
+futures-util = "0.3.28"
+serde = { version = "1.0.188", features = ["derive"] }
+chrono = { version = "0.4.26", features = ["serde"] }
+dotenv = "0.15.0"
+serde_json = "1.0.105"
+tokio = { version = "1.33.0", features = ["full"] }
+uuid = { version = "1.4.1", features = ["serde", "v4"] }
+grpc-service = { git = "https://github.com/Bolu1/rust-gRPC-microservice-tutorial.git" }
