@@ -35,6 +35,10 @@ The task manager application is designed with the following flow:
 4. The task service responds with the result of the operation via gRPC.
 5. The API gateway receives the gRPC response and sends an HTTP response back to the client.
 
+### System Design
+![System Design](System-Design.png)
+
+
 ## Getting Started
 
 ### Prerequisites
